@@ -1,11 +1,14 @@
-const { verifyLogin } = require('./validations/validateInputs');
+const { User } = require('../models');
 
-const loginService = (email, password) => {
-  const error = verifyLogin({ email, password });
-  if (error.type) return error;
-  return { type: 200, message: 'Fields validated' };
+const generateToken = async (email, password) => {
+  const users = await User.findOne({
+    attributes: ['email', 'password'],
+    where: { email, password },
+  });
+  if (!users) return { type: 'INEXISTENT_USER', message: 'Invalid fields' };
+  return { type: null, message: 'Fields validated' };
 };
 
 module.exports = {
-  loginService,
+  generateToken,
 };
