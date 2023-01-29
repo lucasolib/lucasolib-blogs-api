@@ -14,17 +14,23 @@ const createUser = async (displayName, email, password, image) => {
 };
 
 const getAllUsers = async () => {
-  const users = await User.findAll();
-  const usersWithoutPass = users.map((user) => ({
-      id: user.id,
-      displayName: user.displayName,
-      email: user.email,
-      image: user.image,
-    }));
-  return { type: null, message: usersWithoutPass };
+  const users = await User.findAll({
+    attributes: ['id', 'displayName', 'email', 'image'],
+  });
+  return { type: null, message: users };
+};
+
+const getUserById = async (id) => {
+  const user = await User.findOne({
+    attributes: ['id', 'displayName', 'email', 'image'],
+    where: { id },
+  });
+  if (!user) return { type: 'USER_DOES_NOT_EXIST', message: 'User does not exist' };
+  return { type: null, message: user };
 };
 
 module.exports = {
   createUser,
   getAllUsers,
+  getUserById,
 };
