@@ -29,8 +29,21 @@ const getUserById = async (id) => {
   return { type: null, message: user };
 };
 
+const deleteUserMe = async (email) => {
+  const userToDelete = await User.findOne({
+    attributes: ['id', 'displayName', 'email', 'image'],
+    where: { email },
+  });
+  if (!userToDelete) return { type: 'USER_DOES_NOT_EXIST', message: 'User does not exist' };
+  const user = await User.destroy({
+    where: { email },
+  });
+  return { type: null, message: user };
+};
+
 module.exports = {
   createUser,
   getAllUsers,
   getUserById,
+  deleteUserMe,
 };
