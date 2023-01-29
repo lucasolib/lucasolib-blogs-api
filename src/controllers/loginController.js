@@ -8,7 +8,6 @@ const jwtSecret = process.env.JWT_SECRET;
 const generateToken = async (req, res) => {
     const { email, password } = req.body;
     const error = await loginService.generateToken(email, password);
-    console.log(error);
     if (error.type) return res.status(400).json({ message: error.message });
     const jwtConfig = {
       algorithm: 'HS256',
