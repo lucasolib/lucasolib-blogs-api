@@ -1,8 +1,10 @@
 const express = require('express');
 const { userController } = require('../controllers/index');
+const { validateToken } = require('../middlewares/validateJWT');
 
-const routerUSer = express.Router();
+const routerUser = express.Router();
 
-routerUSer.post('/', userController.createUser);
+routerUser.post('/', userController.createUser);
+routerUser.get('/', validateToken, userController.getAllUsers);
 
-module.exports = routerUSer;
+module.exports = routerUser;
