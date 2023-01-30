@@ -16,6 +16,12 @@ const validatePost = (userId, title, content, categoryIds) => {
   return { type: null, message: '' };
 };
 
+const validateUpdatePost = (userId, title, content) => {
+  const { error } = schemas.updatePostSchema.validate({ userId, title, content });
+  if (error) return { type: 'INVALID_VALUE', message: 'Some required fields are missing' };
+  return { type: null, message: '' };
+};
+
 const validateCategory = (name) => {
   const { error } = schemas.categorySchema.validate(name);
   if (error) return { type: 'INVALID_VALUE', message: '"name" is required' };
@@ -26,4 +32,5 @@ module.exports = {
   validateUser,
   validateCategory,
   validatePost,
+  validateUpdatePost,
 };
