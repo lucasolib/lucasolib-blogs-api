@@ -31,8 +31,8 @@ const getUserById = async (req, res) => {
 };
 
 const deleteUserMe = async (req, res) => {
-  const { user: { email } } = req.body;
-  const { type, message } = await userService.deleteUserMe(email);
+  const { id } = req.user;
+  const { type, message } = await userService.deleteUserMe(id);
   if (type) return res.status(errorMap.mapError(type)).json({ message });
   return res.status(204).end();
 };
