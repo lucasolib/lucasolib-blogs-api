@@ -76,10 +76,29 @@ const deletePostById = async (id, userId) => {
   return { type: null, message: '' };
 };
 
+const getPostByQuery = async (query) => {
+  const posts = await BlogPost.findAll({
+    where: {
+      [Op.or]: [
+        { title: { [Op.like]: `%${query}%` } },
+        { content: { [Op.like]: `%${query}%` } },
+      ],
+    },
+    include: [
+      { model: User, as: 'user', attributes: { exclude: ['password'] } },
+      { model: Category, as: 'categories', through: { attributes: [] } },
+    ],
+  });
+  if (posts.length === 0) return { type: null, message: [] };
+  console.log(posts, 'aaa');
+  return { type: null, message: posts };
+};
+
 module.exports = {
   createPost,
   getAllPosts,
   getPostById,
   updatePostById,
   deletePostById,
+  getPostByQuery,
 };
